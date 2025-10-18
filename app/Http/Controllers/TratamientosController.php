@@ -6,7 +6,7 @@ use App\Models\Tratamientos;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTratamientoRequest;
 use App\Http\Requests\UpdateTratamientoRequest;
-use App\Http\Resources\TratamientosResource;
+use App\Http\Resources\TratamientoResource;
 
 class TratamientosController extends Controller
 {
@@ -16,7 +16,7 @@ class TratamientosController extends Controller
     public function index()
     {
         $tratamientos = Tratamientos::with(['usuario', 'medicamento'])->paginate(10);
-        return TratamientosResource::collection($tratamientos);
+        return TratamientoResource::collection($tratamientos);
     }
 
 
@@ -41,7 +41,7 @@ class TratamientosController extends Controller
     public function show(Tratamientos $tratamientos)
     {
         $tratamientos->load(['usuario', 'medicamento']);
-        return new TratamientosResource($tratamientos);
+        return new TratamientoResource($tratamientos);
     }
 
 
@@ -52,7 +52,7 @@ class TratamientosController extends Controller
     {
         $tratamientos->update($request->validated());
         $tratamientos->load(['usuario', 'medicamento']);
-        return new TratamientosResource($tratamientos);
+        return new TratamientoResource($tratamientos);
     }
 
     /**
