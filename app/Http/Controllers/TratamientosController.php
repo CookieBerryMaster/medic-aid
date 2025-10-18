@@ -23,8 +23,10 @@ class TratamientosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTratamientoRequest $request)
     {
+        $tratamiento = Tratamientos::create($request->validated());
+
         // Opcional: cargar relaciones para la respuesta
         $tratamiento->load(['usuario', 'medicamento']);
 
