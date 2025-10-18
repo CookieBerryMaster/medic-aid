@@ -20,6 +20,15 @@ class AuditResource extends JsonResource
             'accion' => $this->accion,
             'detalles' => $this->detalles,
             'created_at' => $this->created_at,
+
+             'usuario' => $this->whenLoaded('usuario', function () {
+                return [
+                    'id' => $this->usuario->id,
+                    'nombre' => $this->usuario->nombre,
+                    'apellido' => $this->usuario->apellido,
+                    'email' => $this->usuario->email,
+                ];
+            }),
         ];
     }
 }

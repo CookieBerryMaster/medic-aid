@@ -14,4 +14,9 @@ class Audit_logs extends Model
         'detalles',
         'created_at',
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id');
+    }
 }
