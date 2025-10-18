@@ -26,26 +26,25 @@ class TratamientoResource extends JsonResource
             'fecha_fin' => $this->fecha_fin,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            /* descomentar cuando existan las relaciones
+
             'usuario' => $this->whenLoaded('usuario', function () {
                 return [
-                    'id' => $this->usuario->usuario_id,
+                    'id' => $this->usuario->id,
                     'nombre' => $this->usuario->nombre,
                     'apellido' => $this->usuario->apellido,
                     'email' => $this->usuario->email,
-                    'tipo' => $this->usuario->tipo,
                 ];
             }),
 
             'medicamento' => $this->whenLoaded('medicamento', function () {
                 return [
-                    'id' => $this->medicamento->medicamento_id,
+                    'id' => $this->medicamento->id,
                     'nombre' => $this->medicamento->nombre,
-                    'descripcion' => $this->medicamento->descripcion,
-                    'efectos_secundarios' => $this->medicamento->efectos_secundarios,
+                    'tipo' => $this->medicamento->tipo,
+                    'dosis_default' => $this->medicamento->dosis_default,
                 ];
             }),
-            */
+            
         ];
     }
 }
