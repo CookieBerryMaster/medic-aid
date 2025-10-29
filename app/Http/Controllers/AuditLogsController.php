@@ -24,11 +24,8 @@ class AuditLogsController extends Controller
      */
     public function store(Request $request)
     {
-        // Collect input data (ensure Audit_logs model defines $fillable for mass assignment)
-        $data = $request->all();
-
-        // Create the audit log record
-        $auditLogs = Audit_logs::create($data);
+        // Crear el registro a partir de la petición (asegúrate de definir $fillable en el modelo)
+        $auditLogs = Audit_logs::create($request->all());
 
         // Opcional: cargar relaciones para la respuesta
         $auditLogs->load(['usuario']);
