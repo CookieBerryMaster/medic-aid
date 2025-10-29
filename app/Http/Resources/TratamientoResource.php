@@ -7,20 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class TratamientoResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return[
+        return [
             'id' => $this->id,
             'usuario_id' => $this->usuario_id,
-            'medicamento_id' => $this->medicamento_id,
-            'dosis' => $this->dosis,
-            'frecuencia' => $this->frecuencia,
-            'duracion' => $this->duracion,
+            'frecuencia_horas' => $this->frecuencia_horas,
             'notas' => $this->notas,
             'fecha_inicio' => $this->fecha_inicio,
             'fecha_fin' => $this->fecha_fin,
@@ -36,15 +28,17 @@ class TratamientoResource extends JsonResource
                 ];
             }),
 
-            'medicamento' => $this->whenLoaded('medicamento', function () {
-                return [
-                    'id' => $this->medicamento->id,
-                    'nombre' => $this->medicamento->nombre,
-                    'tipo' => $this->medicamento->tipo,
-                    'dosis_default' => $this->medicamento->dosis_default,
-                ];
+            'medicamentos' => $this->whenLoaded('medicamentos', function () {
+                return $this->medicamentos->map(function ($med) {
+                    return [
+                        'id' => $med->id,
+                        'nombre' => $med->nombre,
+                        'tipo' => $med->tipo,
+                        'concentracion' => $med->concentracion,
+                        'dosis' => $med->pivot->dosis,
+                    ];
+                });
             }),
-            
         ];
     }
 }
