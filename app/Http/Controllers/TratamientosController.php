@@ -11,56 +11,57 @@ use App\Http\Resources\TratamientoResource;
 class TratamientosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar todos los tratamientos (con usuario y medicamentos asociados)
      */
     public function index()
     {
-        $tratamientos = Tratamientos::with(['usuario', 'medicamento'])->paginate(10);
+        $tratamientos = Tratamientos::with(['usuario', 'medicamentos'])->paginate(10);
         return TratamientoResource::collection($tratamientos);
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Crear un nuevo tratamiento con sus medicamentos.
      */
     public function store(StoreTratamientoRequest $request)
     {
         $tratamiento = Tratamientos::create($request->validated());
 
-        // Opcional: cargar relaciones para la respuesta
-        $tratamiento->load(['usuario', 'medicamento']);
+        // Asociar los medicamentos con sus dosis en la tabla pivote
+        foreach ($request->medicamentos as $med) {
+            $tratamiento->medicamentos()->attach($med['id'], [
+                'dosis' => $med['dosis'] ?? null,
+            ]);
+        }
 
-        return (new TratamientoResource($tratamiento))
-            ->response()
-            ->setStatusCode(201);
+        $tratamiento->load(['usuario', 'medicamentos']);
+        return new TratamientoResource($tratamiento);
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar un tratamiento específico.
      */
     public function show(Tratamientos $tratamientos)
     {
-        $tratamientos->load(['usuario', 'medicamento']);
+        $tratamientos->load(['usuario', 'medicamentos']);
         return new TratamientoResource($tratamientos);
     }
 
-
     /**
-     * Update the specified resource in storage.
+     * Actualizar un tratamiento existente.
      */
-    public function update(Request $request, Tratamientos $tratamientos)
+    public function update(UpdateTratamientoRequest $request, Tratamientos $tratamientos)
     {
         $tratamientos->update($request->validated());
-        $tratamientos->load(['usuario', 'medicamento']);
+        $tratamientos->load(['usuario', 'medicamentos']);
         return new TratamientoResource($tratamientos);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un tratamiento.
      */
     public function destroy(Tratamientos $tratamientos)
     {
         $tratamientos->delete();
-        return response()->noContent(); // 204
+        return response()->noContent(); // HTTP 204
     }
 }
