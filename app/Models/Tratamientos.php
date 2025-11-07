@@ -10,6 +10,7 @@ class Tratamientos extends Model
 {
     protected $table = 'tratamientos';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     protected $fillable = [
         'usuario_id',

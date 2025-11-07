@@ -59,9 +59,9 @@ class TratamientosController extends Controller
     /**
      * Eliminar un tratamiento.
      */
-    public function destroy(Tratamientos $tratamientos)
+    public function destroy(Tratamientos $tratamiento)
     {
-        $tratamientos->delete();
+        $tratamiento->delete();
         return response()->noContent(); // HTTP 204
     }
 }
