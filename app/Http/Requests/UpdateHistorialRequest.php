@@ -1,23 +1,23 @@
 <?php
 
-// !!
-namespace App\Http\Resources;
+namespace App\Http\Requests;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateHistorialRequest extends JsonResource
+class UpdateHistorialRequest extends FormRequest
 {
-    public function toArray($request)
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
     {
         return [
-            'id'             => $this->id,
-            'tratamiento_id' => $this->tratamiento_id,
-            'fecha_hora'     => $this->fecha_hora,
-            'estado'         => $this->estado,
-            'notas'          => $this->notas,
-            'tratamiento'    => new TratamientoResource($this->whenLoaded('tratamiento')),
-            'created_at'     => $this->created_at,
-            'updated_at'     => $this->updated_at,
+            'tratamiento_id' => 'sometimes|exists:tratamientos,id',
+            'fecha_hora'     => 'sometimes|date',
+            'estado'         => 'sometimes|in:pendiente,tomada,omitida',
+            'notas'          => 'sometimes|string|nullable',
         ];
     }
 }
