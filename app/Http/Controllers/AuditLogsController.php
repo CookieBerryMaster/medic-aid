@@ -6,11 +6,19 @@ use App\Models\Audit_logs;
 use Illuminate\Http\Request;
 use App\Http\Resources\AuditResource;
 
-
 class AuditLogsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *   path="/api/audit-logs",
+     *   summary="Listar registros de auditoría",
+     *   tags={"Audit Logs"},
+     *   security={{"bearerAuth":{}}},
+     *   @OA\Response(
+     *     response=200,
+     *     description="Listado paginado de registros de auditoría"
+     *   )
+     * )
      */
     public function index()
     {
@@ -18,16 +26,29 @@ class AuditLogsController extends Controller
         return AuditResource::collection($auditLogs);
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *   path="/api/audit-logs",
+     *   summary="Crear registro de auditoría",
+     *   tags={"Audit Logs"},
+     *   security={{"bearerAuth":{}}},
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       @OA\Property(property="usuario_id", type="integer", example=1),
+     *       @OA\Property(property="accion", type="string", example="CREAR_TRATAMIENTO"),
+     *       @OA\Property(property="descripcion", type="string", example="El usuario creó un nuevo tratamiento"),
+     *       @OA\Property(property="ip_address", type="string", example="127.0.0.1")
+     *     )
+     *   ),
+     *   @OA\Response(response=201, description="Registro de auditoría creado"),
+     *   @OA\Response(response=422, description="Datos inválidos")
+     * )
      */
     public function store(Request $request)
     {
-        // Crear el registro a partir de la petición (asegúrate de definir $fillable en el modelo)
         $auditLogs = Audit_logs::create($request->all());
 
-        // Opcional: cargar relaciones para la respuesta
         $auditLogs->load(['usuario']);
 
         return (new AuditResource($auditLogs))
@@ -36,7 +57,20 @@ class AuditLogsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *   path="/api/audit-logs/{id}",
+     *   summary="Obtener un registro de auditoría",
+     *   tags={"Audit Logs"},
+     *   security={{"bearerAuth":{}}},
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Registro de auditoría encontrado"),
+     *   @OA\Response(response=404, description="No encontrado")
+     * )
      */
     public function show(Audit_logs $audit_logs)
     {
@@ -44,10 +78,21 @@ class AuditLogsController extends Controller
         return new AuditResource($audit_logs);
     }
 
-
-
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *   path="/api/audit-logs/{id}",
+     *   summary="Eliminar registro de auditoría",
+     *   tags={"Audit Logs"},
+     *   security={{"bearerAuth":{}}},
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=204, description="Eliminado"),
+     *   @OA\Response(response=404, description="No encontrado")
+     * )
      */
     public function destroy(Audit_logs $audit_logs)
     {

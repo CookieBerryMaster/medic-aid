@@ -1,0 +1,931 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API MedicAid",
+        "description": "Documentación de la API de MedicAid (Usuarios, Medicamentos, Tratamientos, Historiales y Auditoría)",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/audit-logs": {
+            "get": {
+                "tags": [
+                    "Audit Logs"
+                ],
+                "summary": "Listar registros de auditoría",
+                "operationId": "8a24c03b06fe3071c4035f4176892716",
+                "responses": {
+                    "200": {
+                        "description": "Listado paginado de registros de auditoría"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Audit Logs"
+                ],
+                "summary": "Crear registro de auditoría",
+                "operationId": "ea7ff7fb9a702bd6cf96e05245992a75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "accion": {
+                                        "type": "string",
+                                        "example": "CREAR_TRATAMIENTO"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "El usuario creó un nuevo tratamiento"
+                                    },
+                                    "ip_address": {
+                                        "type": "string",
+                                        "example": "127.0.0.1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registro de auditoría creado"
+                    },
+                    "422": {
+                        "description": "Datos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/audit-logs/{id}": {
+            "get": {
+                "tags": [
+                    "Audit Logs"
+                ],
+                "summary": "Obtener un registro de auditoría",
+                "operationId": "b66779a33559eaaaad6e147d5e916f1c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registro de auditoría encontrado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Audit Logs"
+                ],
+                "summary": "Eliminar registro de auditoría",
+                "operationId": "9e05da700d0bf8d60c2f355e6e438771",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Eliminado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/historial": {
+            "get": {
+                "tags": [
+                    "Historial"
+                ],
+                "summary": "Listar historiales",
+                "operationId": "1ba06fa09b858db7daee2bbd3ac32fa6",
+                "responses": {
+                    "200": {
+                        "description": "Listado de historiales con sus tratamientos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Historial"
+                ],
+                "summary": "Crear historial",
+                "operationId": "3c7fb2088a76a1fa0c1cb8a5571ed40f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "tratamiento_id",
+                                    "fecha_hora"
+                                ],
+                                "properties": {
+                                    "tratamiento_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_hora": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-11-24 10:30:00"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "pendiente"
+                                    },
+                                    "notas": {
+                                        "type": "string",
+                                        "example": "Tomar en ayunas"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Historial creado"
+                    },
+                    "422": {
+                        "description": "Datos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/historial/{historial}": {
+            "get": {
+                "tags": [
+                    "Historial"
+                ],
+                "summary": "Obtener un historial",
+                "operationId": "c82e05d1e1ad3c96f40ec003d7a900e6",
+                "parameters": [
+                    {
+                        "name": "historial",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Historial encontrado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Historial"
+                ],
+                "summary": "Actualizar historial",
+                "operationId": "fe8169d7f6111918b12cb5d32afe3fd8",
+                "parameters": [
+                    {
+                        "name": "historial",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "tratamiento_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_hora": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "tomada"
+                                    },
+                                    "notas": {
+                                        "type": "string",
+                                        "example": "Sin efectos secundarios"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Historial actualizado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Historial"
+                ],
+                "summary": "Eliminar historial",
+                "operationId": "42d6c66789e5095239097c15873b304b",
+                "parameters": [
+                    {
+                        "name": "historial",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Eliminado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicamentos": {
+            "get": {
+                "tags": [
+                    "Medicamentos"
+                ],
+                "summary": "Listar medicamentos",
+                "operationId": "c64f62e0d1a3b6f17e40b3ae98733ab2",
+                "responses": {
+                    "200": {
+                        "description": "Listado de medicamentos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Medicamentos"
+                ],
+                "summary": "Crear medicamento",
+                "operationId": "15e861c0d4becaccba7019d18f082289",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Paracetamol 500mg"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Analgesico y antipirético"
+                                    },
+                                    "via_administracion": {
+                                        "type": "string",
+                                        "example": "Oral"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Medicamento creado"
+                    },
+                    "422": {
+                        "description": "Datos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicamentos/{id}": {
+            "get": {
+                "tags": [
+                    "Medicamentos"
+                ],
+                "summary": "Obtener un medicamento",
+                "operationId": "e1c8c6e6a69148615e417d2f2b36e560",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicamento encontrado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Medicamentos"
+                ],
+                "summary": "Actualizar medicamento",
+                "operationId": "8702d56a76d4a1ec6e195692982adbec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    },
+                                    "descripcion": {
+                                        "type": "string"
+                                    },
+                                    "via_administracion": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Medicamento actualizado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Medicamentos"
+                ],
+                "summary": "Eliminar medicamento",
+                "operationId": "d05f9f3f4c4fcf138fd5fef29c4c0506",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Eliminado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/tratamientos": {
+            "get": {
+                "tags": [
+                    "Tratamientos"
+                ],
+                "summary": "Listar tratamientos",
+                "operationId": "7891c37499a819c50229db25fe8109fc",
+                "responses": {
+                    "200": {
+                        "description": "Listado paginado de tratamientos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tratamientos"
+                ],
+                "summary": "Crear tratamiento",
+                "operationId": "fa31dcb091355a40afd3130f73e7fa4a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "usuario_id",
+                                    "medicamentos"
+                                ],
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "medicamentos": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "dosis": {
+                                                    "type": "string",
+                                                    "example": "1 tableta cada 8 horas"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Tratamiento para infección respiratoria"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tratamiento creado"
+                    },
+                    "422": {
+                        "description": "Datos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/tratamientos/{id}": {
+            "get": {
+                "tags": [
+                    "Tratamientos"
+                ],
+                "summary": "Obtener un tratamiento",
+                "operationId": "3385ad30ccacdc603687449aa7d68e6d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tratamiento encontrado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Tratamientos"
+                ],
+                "summary": "Actualizar tratamiento",
+                "operationId": "6a439236d7742e294bb15a1d6df922a7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer"
+                                    },
+                                    "descripcion": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tratamiento actualizado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tratamientos"
+                ],
+                "summary": "Eliminar tratamiento",
+                "operationId": "74fc72f1a89faff821b39f0af3e2d4ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Eliminado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listar usuarios",
+                "operationId": "e9d4d8b419dbef04b5748fbf9ccf3881",
+                "responses": {
+                    "200": {
+                        "description": "Listado de usuarios"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Crear usuario",
+                "operationId": "4e9dbcbdaaaf9faab196a82d5cbaea23",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Ana"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "example": "Sofía"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "ana@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    },
+                                    "rol": {
+                                        "type": "string",
+                                        "example": "paciente"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario creado"
+                    },
+                    "422": {
+                        "description": "Datos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/usuarios/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener un usuario",
+                "operationId": "e9ac05ddc4ea46d8848b012d7d92e3ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario encontrado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualizar usuario",
+                "operationId": "27ac608b6dd8b8e7c7c45b10c5210b3e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    },
+                                    "apellido": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "rol": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario actualizado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar usuario",
+                "operationId": "ea700764859a665afd38bb39c2842f1c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Eliminado"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Audit Logs",
+            "description": "Audit Logs"
+        },
+        {
+            "name": "Historial",
+            "description": "Historial"
+        },
+        {
+            "name": "Medicamentos",
+            "description": "Medicamentos"
+        },
+        {
+            "name": "Tratamientos",
+            "description": "Tratamientos"
+        },
+        {
+            "name": "Usuarios",
+            "description": "Usuarios"
+        }
+    ]
+}
