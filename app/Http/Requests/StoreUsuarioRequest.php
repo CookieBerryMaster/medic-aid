@@ -27,6 +27,7 @@ class StoreUsuarioRequest extends FormRequest
             'email' => 'nullable|email|unique:usuarios,email',
             'telefono' => 'nullable|string|max:50',
             'fecha_nacimiento' => 'nullable|date',
+            'password' => 'required|string|min:8',
         ];
     }
 

@@ -17,6 +17,7 @@ class Usuario extends Model
         'email',
         'telefono',
         'fecha_nacimiento',
+        'password',
     ];
 
     protected $casts = [

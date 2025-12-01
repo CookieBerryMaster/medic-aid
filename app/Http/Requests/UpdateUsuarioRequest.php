@@ -27,6 +27,7 @@ class UpdateUsuarioRequest extends FormRequest
             'email' => 'sometimes|nullable|email|unique:usuarios,email,' . $this->usuario->id,
             'telefono' => 'nullable|string|max:50',
             'fecha_nacimiento' => 'nullable|date',
+            'password' => 'sometimes|required|string|min:8',
         ];
     }
 
