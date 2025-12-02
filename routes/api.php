@@ -8,8 +8,15 @@ use App\Http\Controllers\TratamientosController;
 use App\Http\Controllers\AuditLogsController;
 
 
+Route::post('/login', [UsuarioController::class, 'login'])->name('login');
+Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('medicamentos', MedicamentoController::class);
 Route::apiResource('historial', HistorialController::class);
 Route::apiResource('tratamientos', TratamientosController::class);
 Route::apiResource('audit-logs', AuditLogsController::class);
+
+Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+Route::get('/me', [UsuarioController::class, 'me'])->name('me');
+
+});
