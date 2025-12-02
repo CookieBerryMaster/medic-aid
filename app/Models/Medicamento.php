@@ -15,7 +15,7 @@ class Medicamento extends Model
     protected $fillable = [
         'nombre',
         'tipo',
-        'concentracion',
+        'dosis_default', // 👈 AQUÍ EL CAMBIO
     ];
 
     public function tratamientos()
@@ -25,7 +25,6 @@ class Medicamento extends Model
             'medicamento_tratamiento',
             'medicamento_id',
             'tratamiento_id'
-        )
-        ->withPivot('dosis');
+        )->withPivot('dosis');
     }
 }
