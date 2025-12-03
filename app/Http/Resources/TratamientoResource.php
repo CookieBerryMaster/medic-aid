@@ -16,6 +16,7 @@ class TratamientoResource extends JsonResource
             'notas' => $this->notas,
             'fecha_inicio' => $this->fecha_inicio,
             'fecha_fin' => $this->fecha_fin,
+            'hora_inicio' => $this->hora_inicio,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
@@ -34,8 +35,8 @@ class TratamientoResource extends JsonResource
                         'id' => $med->id,
                         'nombre' => $med->nombre,
                         'tipo' => $med->tipo,
-                        'concentracion' => $med->concentracion,
                         'dosis' => $med->pivot->dosis,
+                        'frecuencia_horas' => $this->frecuencia_horas,
                     ];
                 });
             }),

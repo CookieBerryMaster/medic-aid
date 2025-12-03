@@ -16,9 +16,8 @@ class StoreTratamientoRequest extends FormRequest
         return [
             'usuario_id' => 'required|exists:usuarios,id',
 
-            // Array de medicamentos
             'medicamentos' => 'required|array|min:1',
-            'medicamentos.*.id' => 'required|exists:medicamentos,id',
+            'medicamentos.*.medicamento_id' => 'required|exists:medicamentos,id', // 👈 CAMBIO
             'medicamentos.*.dosis' => 'nullable|string|max:255',
 
             'frecuencia_horas' => 'required|integer|min:1',
@@ -28,4 +27,5 @@ class StoreTratamientoRequest extends FormRequest
             'notas' => 'nullable|string',
         ];
     }
+
 }

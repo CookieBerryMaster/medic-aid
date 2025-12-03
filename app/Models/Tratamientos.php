@@ -10,7 +10,9 @@ class Tratamientos extends Model
 {
     protected $table = 'tratamientos';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+
+    // La tabla tiene created_at y updated_at, así que mejor lo dejamos activado
+    public $timestamps = true;
 
     protected $fillable = [
         'usuario_id',
@@ -31,10 +33,8 @@ class Tratamientos extends Model
         return $this->belongsToMany(
             Medicamento::class,
             'medicamento_tratamiento',
-            'tratamiento_id',   // nombre correcto en la tabla pivote
-            'medicamento_id'    // nombre correcto en la tabla pivote
-        )
-        ->withPivot('dosis');
+            'tratamiento_id',
+            'medicamento_id'
+        )->withPivot('dosis');
     }
-
 }
